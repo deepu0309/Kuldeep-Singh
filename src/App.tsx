@@ -273,7 +273,7 @@ export default function App() {
                 </div>
 
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-accent-spring/20 border border-accent-spring/40 px-3 py-1 rounded-full text-[10px] font-mono text-accent-spring z-20">
-                  // kuldeep_profile.jpg
+                  // my jpg
                 </div>
               </div>
             </FadeIn>
