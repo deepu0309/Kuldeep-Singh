@@ -243,14 +243,35 @@ export default function App() {
             <FadeIn x={-50}>
               <div className="relative aspect-[4/5] bg-surface rounded-xl overflow-hidden border border-white/5 group">
                 <div className="absolute inset-0 bg-accent-spring/10 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8 bg-surface-brighter md:bg-surface">
+                
+                {/* 
+                  To use your own image: 
+                  Place a file named 'profile.jpg' in your public folder 
+                */}
+                <img 
+                  id="profile-img" 
+                  src="/profile.jpg" 
+                  alt="Kuldeep Singh" 
+                  className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-500 group-hover:scale-105"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none';
+                    document.getElementById('placeholder-content')?.classList.remove('hidden');
+                  }}
+                  onLoad={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'block';
+                    document.getElementById('placeholder-content')?.classList.add('hidden');
+                  }}
+                />
+
+                <div id="placeholder-content" className="absolute inset-0 flex flex-col items-center justify-center text-center p-8 bg-surface-brighter md:bg-surface">
                   <Coffee className="w-12 h-12 text-accent-spring mb-4 opacity-20" />
                   <p className="font-mono text-xs text-muted leading-relaxed">
-                    // Image Asset Placeholder <br/>
-                    System is currently rendering <br/>
-                    optimized profile metadata...
+                    // profile.jpg not found <br/>
+                    Awaiting bio-metric scan <br/>
+                    in /public directory...
                   </p>
                 </div>
+
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-accent-spring/20 border border-accent-spring/40 px-3 py-1 rounded-full text-[10px] font-mono text-accent-spring z-20">
                   // kuldeep_profile.jpg
                 </div>
