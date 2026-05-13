@@ -543,13 +543,15 @@ export default function App() {
               
               <div className="grid sm:grid-cols-2 gap-4 md:gap-8 mb-12 md:mb-16">
                 {[
-                  { icon: <Mail />, l: "email", v: "hello@kuldeepsingh.dev" },
-                  { icon: <Github />, l: "github", v: "github.com/kuldeep-java" },
-                  { icon: <Linkedin />, l: "linkedin", v: "linkedin.com/in/kuldeep" },
-                  { icon: <Phone />, l: "phone", v: "+91 (GURUGRAM)" }
+                  { icon: <Mail />, l: "email", v: "hello@kuldeepsingh.dev", href: "mailto:hello@kuldeepsingh.dev" },
+                  { icon: <Github />, l: "github", v: "github.com/deepu0309", href: "https://github.com/deepu0309" },
+                  { icon: <Linkedin />, l: "linkedin", v: "linkedin.com/in/singh-deep0309", href: "https://www.linkedin.com/in/singh-deep0309/" },
+                  { icon: <Phone />, l: "phone", v: "+91 8708946881", href: "tel:+918708946881" }
                 ].map((c, i) => (
                   <motion.a 
-                    href="#"
+                    href={c.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     key={i}
                     className="flex items-center gap-4 md:gap-6 p-4 md:p-6 bg-white border-2 border-accent-java rounded-xl md:rounded-2xl neo-shadow-hover transition-all overflow-hidden"
                   >
