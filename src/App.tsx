@@ -62,28 +62,28 @@ const SKILLS: Skill[] = [
 
 const PROJECTS: Project[] = [
   { 
-    icon: <Box className="w-6 h-6" />, 
+    icon: <Database className="w-6 h-6" />, 
     name: "ERP Billing & Inventory Engine", 
-    desc: "Architected a synchronized backend integrating a local PostgreSQL database with an MS365 ERP inventory and billing frontend. Handled complex state-machine logic for shipment holds.", 
-    tags: ["Spring Boot", "MS365 ERP", "PostgreSQL"] 
+    desc: "High-performance enterprise middleware for MS Business Central 365. Engineered to eliminate frontal user licensing costs through custom API-driven inventory, billing, and transfer modules. Deployed across 20+ states.", 
+    tags: ["Spring Boot", "BC365 API", "MSSQL", "Enterprise Security"] 
   },
   { 
-    icon: <Activity className="w-6 h-6" />, 
-    name: "Fleet Tracking System", 
-    desc: "Developed a comprehensive vehicle tracking and fleet management application. Integrated Firebase Cloud Messaging (FCM) to dispatch real-time vehicle alerts and status updates.", 
-    tags: ["Java", "Firebase FCM", "REST API"] 
+    icon: <MapPin className="w-6 h-6" />, 
+    name: "AIS140 Fleet Intel Engine", 
+    desc: "Mission-critical backend for AIS140 compliant device tracking across 20+ states. Engineered a high-throughput architecture with TCP listeners and RabbitMQ. Implemented Firebase FCM for cross-platform notifications and JWT for hardened API security.", 
+    tags: ["Spring Boot", "TCP Listener", "RabbitMQ", "Firebase FCM", "JWT Security"] 
   },
   { 
     icon: <ShieldCheck className="w-6 h-6" />, 
-    name: "Corporate Grievance Portal", 
-    desc: "Built an internal corporate intranet for IT ticketing. Leveraged Azure to sync and authenticate corporate employee data for seamless SSO and role-based escalation.", 
-    tags: ["Spring Boot", "Azure", "Microservices"] 
+    name: "AIS140 Grievance Ecosystem", 
+    desc: "State-mandated grievance portal for AIS140 compliance. Integrated MSG91 for Secure Mobile OTP login and engineered inter-application SSO for unified access. Features full SLA tracking, automated escalation, and agent resolution metrics.", 
+    tags: ["Spring Boot", "MSG91 SMS", "JWT", "SLA Tracking"] 
   },
   { 
     icon: <Terminal className="w-6 h-6" />, 
-    name: "Smart VMS System", 
-    desc: "Created a centralized Visitor Management System for enterprise facilities. Utilized Azure to enable secure corporate employee data lookups for host verification.", 
-    tags: ["Java", "Azure AD", "REST API"] 
+    name: "Enterprise VMS Network", 
+    desc: "Digital reception intelligence for multi-location facilities. Features Mobile OTP verification, repeat visitor photo-detection, and hierarchical card-to-floor assignment. Automated host workflows for rescheduling/rejection via email, with real-time employee data refresh using Azure Graph APIs.", 
+    tags: ["Spring Boot", "Azure Graph API", "OTP Auth", "Email SMTP"] 
   }
 ];
 
@@ -92,7 +92,7 @@ const EXPERIENCE: Experience[] = [
     date: "2024 – PRESENT", 
     role: "Backend Developer", 
     company: "Rosmerta Technologies", 
-    desc: "Leading core Spring Boot development. Established Grafana dashboards for JVM monitoring and optimized query latency by 40% through JPA tuning." 
+    desc: "Architected the MSRTC Fleet Management System, managing one of Asia's largest bus fleets (~18,000+ vehicles). Optimized core Spring Boot services, established Grafana monitoring, and improved query performance by 40% through deep JPA tuning." 
   },
   { 
     date: "2023 – 2024", 
@@ -114,7 +114,7 @@ const BackgroundParticles = () => {
   );
 };
 
-const FadeIn = ({ children, delay = 0, x = 0, y = 40 }: { children: React.ReactNode, delay?: number, x?: number, y?: number }) => (
+const FadeIn = ({ children, delay = 0, x = 0, y = 40, className = "" }: { children: React.ReactNode, delay?: number, x?: number, y?: number, className?: string }) => (
   <motion.div
     initial={{ opacity: 0, x, y, scale: 0.98 }}
     whileInView={{ opacity: 1, x: 0, y: 0, scale: 1 }}
@@ -124,6 +124,7 @@ const FadeIn = ({ children, delay = 0, x = 0, y = 40 }: { children: React.ReactN
       delay, 
       ease: [0.16, 1, 0.3, 1]
     }}
+    className={className}
   >
     {children}
   </motion.div>
@@ -244,7 +245,7 @@ export default function App() {
         
         {/* --- Hero Section --- */}
         <section id="hero" className="min-h-[70vh] lg:min-h-[85vh] grid lg:grid-cols-2 gap-12 items-center pt-20 lg:pt-0">
-          <div className="text-left order-2 lg:order-1 pt-8 lg:pt-0">
+          <div className="text-left order-2 lg:order-1 pt-8 lg:pt-12">
             <SectionLabel text="WELCOME TO MY PORTFOLIO" />
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
@@ -288,7 +289,7 @@ export default function App() {
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
             className="relative order-1 lg:order-2"
           >
-            <div className="neo-card bg-white p-6 md:p-10 lg:p-12 max-w-sm md:max-w-md mx-auto lg:ml-auto">
+            <div className="neo-card bg-white p-6 md:p-10 lg:p-12 max-w-sm md:max-w-xl lg:max-w-md mx-auto lg:ml-auto">
               <div className="w-12 h-12 lg:w-16 lg:h-16 bg-accent-spring rounded-full border-2 border-accent-java flex items-center justify-center mx-auto mb-6 md:mb-8 neo-shadow">
                 <Sparkles className="w-6 h-6 lg:w-8 lg:h-8" />
               </div>
@@ -470,15 +471,15 @@ export default function App() {
             <SectionLabel text="NEAR YOU · GURUGRAM" centered />
             <h2 className="text-4xl md:text-5xl font-black tracking-tighter mb-10 md:mb-16 text-center italic uppercase leading-none">AVAILABLE <br className="md:hidden" /> ARCHITECTURE</h2>
           </FadeIn>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-10 items-stretch">
             {PROJECTS.map((p, i) => (
-              <div key={i}>
-                <FadeIn delay={i * 0.1}>
+              <div key={i} className="h-full">
+                <FadeIn delay={i * 0.1} className="h-full">
                   <motion.div 
                     whileHover={{ y: -5, scale: 1.01 }}
-                    className="neo-card group h-full relative overflow-hidden p-6 md:p-10"
+                    className="neo-card group h-full relative overflow-hidden p-6 md:p-8 lg:p-10 flex flex-col"
                   >
-                    <div className="flex justify-between items-start mb-6 md:mb-8">
+                    <div className="flex justify-between items-start mb-6 md:mb-8 shrink-0">
                       <div className="w-12 h-12 md:w-14 md:h-14 bg-bg border-2 border-accent-java rounded-xl md:rounded-2xl flex items-center justify-center text-accent-java neo-shadow group-hover:bg-accent-spring transition-colors">
                         {React.cloneElement(p.icon as React.ReactElement, { className: "w-6 h-6 md:w-7 md:h-7" })}
                       </div>
@@ -486,13 +487,13 @@ export default function App() {
                         <ExternalLink className="w-4 h-4 md:w-5 md:h-5" />
                       </a>
                     </div>
-                    <h3 className="text-xl md:text-2xl font-black mb-3 md:mb-4 uppercase tracking-tighter leading-none">{p.name}</h3>
-                    <p className="font-medium text-muted text-xs md:text-sm leading-relaxed mb-6 md:mb-8">
+                    <h3 className="text-xl md:text-2xl lg:text-xl xl:text-2xl font-black mb-3 md:mb-4 uppercase tracking-tighter leading-[0.9]">{p.name}</h3>
+                    <p className="font-medium text-muted text-xs md:text-sm leading-relaxed mb-6 md:mb-8 flex-grow">
                       {p.desc}
                     </p>
-                    <div className="flex flex-wrap gap-2 md:gap-3">
+                    <div className="flex flex-wrap gap-2 md:gap-3 shrink-0">
                       {p.tags.map((t, j) => (
-                        <span key={j} className="px-3 md:px-4 py-1 md:py-1.5 bg-bg border-2 border-accent-java rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest whitespace-nowrap">
+                        <span key={j} className="px-3 md:px-4 py-1 md:py-1.5 bg-bg border-2 border-accent-java rounded-full text-[8px] md:text-[9px] lg:text-[10px] font-black uppercase tracking-widest whitespace-nowrap group-hover:bg-accent-spring/20">
                           {t}
                         </span>
                       ))}
