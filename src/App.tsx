@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useSpring, AnimatePresence, useInView } from 'motion/react';
 import Lenis from 'lenis';
@@ -146,6 +147,33 @@ export default function App() {
     restDelta: 0.001
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries());
+    
+    try {
+      const key = import.meta.env.VITE_FORMSPREE_KEY || 'your_default_key';
+      const response = await fetch(`https://formspree.io/f/${key}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      
+      if (response.ok) {
+        setIsSubmitted(true);
+      }
+    } catch (err) {
+      console.error('Submission error:', err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
@@ -252,21 +280,53 @@ export default function App() {
               <div className="w-12 h-12 md:w-16 md:h-16 bg-accent-spring rounded-full border-2 border-accent-java flex items-center justify-center mx-auto mb-6 md:mb-8 neo-shadow">
                 <Sparkles className="w-6 h-6 md:w-8 md:h-8" />
               </div>
-              <h3 className="text-xl md:text-2xl font-black text-center mb-2 tracking-tight">JOIN THE NETWORK</h3>
-              <p className="text-muted text-center text-xs md:text-sm mb-6 md:mb-8 font-medium italic">Enter your requirements to get started</p>
+              <h3 className="text-xl md:text-2xl font-black text-center mb-2 tracking-tight uppercase">JOIN THE NETWORK</h3>
               
-              <div className="space-y-4">
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold uppercase tracking-widest ml-1 opacity-60">Project Scale</label>
-                  <div className="border-2 border-accent-java rounded-xl p-3 md:p-4 flex justify-between items-center bg-bg/50">
-                    <span className="font-bold text-sm">Enterprise Microservices</span>
-                    <ChevronRight className="w-4 h-4" />
-                  </div>
-                </div>
-                <button className="w-full bg-accent-spring border-2 border-accent-java rounded-xl py-4 md:py-5 font-black text-base md:text-lg neo-shadow-hover transition-all mt-4">
-                  COMPLY NOW
-                </button>
-              </div>
+              {isSubmitted ? (
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="bg-accent-spring/20 border-2 border-accent-java rounded-2xl p-8 text-center"
+                >
+                  <CheckCircle2 className="w-12 h-12 mx-auto mb-4 text-accent-java" />
+                  <div className="font-black text-lg mb-2">REQUEST RECEIVED</div>
+                  <p className="text-xs font-bold text-muted uppercase">Protocol initiated. Expect contact within 24 cycles.</p>
+                </motion.div>
+              ) : (
+                <>
+                  <p className="text-muted text-center text-xs md:text-sm mb-6 md:mb-8 font-medium italic">Enter your details to initiate contact</p>
+                  
+                  <form onSubmit={handleFormSubmit} className="space-y-4">
+                    <div className="space-y-1">
+                      <label className="text-[10px] font-bold uppercase tracking-widest ml-1 opacity-60">Full Identity</label>
+                      <input 
+                        required
+                        name="name"
+                        type="text" 
+                        placeholder="KULDEEP SINGH"
+                        className="w-full border-2 border-accent-java rounded-xl p-3 md:p-4 text-sm font-bold bg-bg/50 focus:bg-white outline-none transition-all placeholder:opacity-30"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[10px] font-bold uppercase tracking-widest ml-1 opacity-60">WhatsApp No.</label>
+                      <input 
+                        required
+                        name="whatsapp"
+                        type="tel" 
+                        placeholder="+91 XXXX-XXXXXX"
+                        className="w-full border-2 border-accent-java rounded-xl p-3 md:p-4 text-sm font-bold bg-bg/50 focus:bg-white outline-none transition-all placeholder:opacity-30"
+                      />
+                    </div>
+                    <button 
+                      disabled={isSubmitting}
+                      type="submit"
+                      className="w-full bg-accent-spring border-2 border-accent-java rounded-xl py-4 md:py-5 font-black text-base md:text-lg neo-shadow-hover transition-all mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isSubmitting ? 'SYNCING...' : 'COMPLY NOW'}
+                    </button>
+                  </form>
+                </>
+              )}
               <p className="text-[9px] md:text-[10px] text-muted text-center mt-5 md:mt-6 font-medium">By connecting, you agree to technical T&C and SLA policies</p>
             </div>
             {/* Float Element */}
