@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { Zap } from 'lucide-react';
 
 const LightSpeedPreloader = ({ onComplete }: { onComplete: () => void }) => {
   const [phase, setPhase] = useState<'idle' | 'warming' | 'launch' | 'lightspeed' | 'complete'>('idle');
@@ -24,32 +25,32 @@ const LightSpeedPreloader = ({ onComplete }: { onComplete: () => void }) => {
   return (
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 z-[1000] bg-[#080810] flex items-center justify-center overflow-hidden"
+        className="fixed inset-0 z-[1000] bg-[#facc15] flex items-center justify-center overflow-hidden"
         exit={{ opacity: 0, transition: { duration: 1 } }}
       >
         {/* Starfield / Hyperdrive Lines */}
         <div className="absolute inset-0">
-          {[...Array(50)].map((_, i) => (
+          {[...Array(60)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute bg-white rounded-full"
+              className="absolute bg-black rounded-full"
               initial={{ 
                 x: Math.random() * 100 + '%', 
                 y: Math.random() * 100 + '%', 
-                width: 2, 
-                height: 2, 
-                opacity: 0.1 
+                width: 3, 
+                height: 3, 
+                opacity: 0.2
               }}
               animate={
                 phase === 'lightspeed' 
                 ? { 
-                    height: [2, 1000], 
+                    height: [3, 1200], 
                     y: ['-10%', '110%'],
-                    opacity: [0.1, 1, 0],
-                    transition: { duration: 0.5, repeat: Infinity, ease: 'linear' }
+                    opacity: [0.2, 0.8, 0],
+                    transition: { duration: 0.4, repeat: Infinity, ease: 'linear' }
                   } 
                 : { 
-                    opacity: [0.1, 0.5, 0.1], 
+                    opacity: [0.1, 0.3, 0.1], 
                     transition: { duration: 2, repeat: Infinity } 
                   }
               }
@@ -57,45 +58,45 @@ const LightSpeedPreloader = ({ onComplete }: { onComplete: () => void }) => {
           ))}
         </div>
 
-        {/* The "Space Ship" (Stylized Code Block) */}
+        {/* The "Space Ship" (Neo-brutalist Style) */}
         <div className="relative">
           <motion.div
             initial={{ y: 0, scale: 1, opacity: 1 }}
             animate={
               phase === 'warming' ? { 
-                y: [0, -2, 2, -2, 0], 
-                rotate: [0, -0.5, 0.5, -0.5, 0],
-                transition: { duration: 0.1, repeat: Infinity }
+                y: [0, -3, 3, -3, 0], 
+                rotate: [0, -1, 1, -1, 0],
+                transition: { duration: 0.05, repeat: Infinity }
               } :
               phase === 'launch' ? {
-                y: [0, -50, -200],
-                transition: { duration: 1.5, ease: 'easeIn' }
+                y: [0, -80, -300],
+                transition: { duration: 1.2, ease: 'easeIn' }
               } :
               phase === 'lightspeed' ? {
-                y: [-200, -2000],
-                scaleY: [1, 10],
+                y: [-300, -2500],
+                scaleY: [1, 15],
                 opacity: [1, 0],
-                transition: { duration: 0.5, ease: 'easeIn' }
+                transition: { duration: 0.4, ease: 'easeIn' }
               } : {}
             }
             className="flex flex-col items-center"
           >
-            {/* Corporate/Backend Ship Design */}
-            <div className="w-12 h-20 bg-accent-spring rounded-t-full relative shadow-[0_0_30px_rgba(109,179,63,0.5)]">
+            {/* Neo-brutalist Ship Design */}
+            <div className="w-16 h-28 bg-white border-4 border-black rounded-t-full relative neo-shadow">
               {/* Cockpit */}
-              <div className="absolute top-4 left-1/2 -translate-x-1/2 w-4 h-6 bg-bg/50 rounded-full border border-white/20" />
+              <div className="absolute top-6 left-1/2 -translate-x-1/2 w-6 h-8 bg-black rounded-full" />
               {/* Fins */}
-              <div className="absolute -left-4 bottom-0 w-4 h-10 bg-accent-spring rounded-l-full" />
-              <div className="absolute -right-4 bottom-0 w-4 h-10 bg-accent-spring rounded-r-full" />
+              <div className="absolute -left-6 bottom-0 w-6 h-14 bg-black border-2 border-black rounded-l-full" />
+              <div className="absolute -right-6 bottom-0 w-6 h-14 bg-black border-2 border-black rounded-r-full" />
             </div>
 
             {/* Thruster Flame */}
             <motion.div 
               animate={{ 
-                scaleY: phase === 'launch' ? [1, 2, 1.5] : phase === 'warming' ? [0.8, 1.2, 0.8] : 0,
+                scaleY: phase === 'launch' ? [1, 2.5, 2] : phase === 'warming' ? [1, 1.4, 1] : 0,
                 opacity: phase === 'lightspeed' ? 0 : 1
               }}
-              className="w-8 h-16 bg-gradient-to-b from-accent-java to-transparent blur-sm mt-[-4px] origin-top"
+              className="w-10 h-24 bg-gradient-to-b from-black to-transparent blur-[2px] mt-[-4px] origin-top"
             />
           </motion.div>
 
@@ -103,26 +104,28 @@ const LightSpeedPreloader = ({ onComplete }: { onComplete: () => void }) => {
           {phase === 'launch' && (
             <motion.div 
               initial={{ scale: 0, opacity: 1 }}
-              animate={{ scale: 4, opacity: 0 }}
-              className="absolute top-20 left-1/2 -translate-x-1/2 w-20 h-20 bg-accent-java/30 rounded-full blur-xl"
+              animate={{ scale: 6, opacity: 0 }}
+              className="absolute top-24 left-1/2 -translate-x-1/2 w-24 h-24 bg-black/40 rounded-full blur-2xl"
             />
           )}
         </div>
 
         {/* Text Notifications */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 font-mono text-[10px] tracking-widest text-muted uppercase">
+        <div className="absolute bottom-16 left-1/2 -translate-x-1/2 font-black text-xs tracking-tighter text-black uppercase bg-white border-2 border-black px-6 py-2 neo-shadow">
           <AnimatePresence mode="wait">
             <motion.div
               key={phase}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
+              className="flex items-center gap-3"
             >
-              {phase === 'idle' && "> sys.init()"}
-              {phase === 'warming' && "> core.thrusters_online()"}
-              {phase === 'launch' && "> sys.ignition(true)"}
-              {phase === 'lightspeed' && "> protocol.warp_drive(1)"}
-              {phase === 'complete' && "> connection.established()"}
+              <Zap className="w-4 h-4 fill-black" />
+              {phase === 'idle' && "Initializing Core..."}
+              {phase === 'warming' && "Thrusters Online"}
+              {phase === 'launch' && "Ignition Success"}
+              {phase === 'lightspeed' && "Warp Drive Active"}
+              {phase === 'complete' && "Connection Secure"}
             </motion.div>
           </AnimatePresence>
         </div>

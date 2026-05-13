@@ -1,53 +1,56 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #080810;
-  --color-surface: #0f0f1a;
-  --color-surface-brighter: #17172a;
-  --color-accent-spring: #6db33f;
-  --color-accent-java: #f89820;
-  --color-muted: #6b6b85;
+  --color-bg: #f3f4f1;
+  --color-surface: #ffffff;
+  --color-surface-brighter: #ffffff;
+  --color-accent-spring: #facc15; /* Yellow */
+  --color-accent-java: #1a1a1a;   /* Black/Charcoal */
+  --color-muted: #71717a;
 
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-  --font-sans: "Syne", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Public Sans", ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
   html, body {
-    @apply bg-bg text-[#e8e8f5] font-sans;
+    @apply bg-bg text-accent-java font-sans;
     overflow-x: hidden;
-    cursor: none;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 
-  /* Hide scrollbar for Chrome, Safari and Opera */
   html::-webkit-scrollbar,
   body::-webkit-scrollbar {
     display: none;
   }
 }
 
-* {
-  cursor: none !important;
+.neo-shadow {
+  box-shadow: 4px 4px 0px 0px #1a1a1a;
 }
 
-@media (pointer: coarse) {
-  * {
-    cursor: auto !important;
-  }
+.neo-shadow-hover:hover {
+  box-shadow: 6px 6px 0px 0px #1a1a1a;
+  transform: translate(-2px, -2px);
 }
 
-.glow-spring {
-  text-shadow: 0 0 10px rgba(109, 179, 63, 0.5);
+.neo-button {
+  @apply bg-accent-spring text-accent-java border-2 border-accent-java font-bold px-6 py-3 rounded-full transition-all flex items-center gap-2;
+  box-shadow: 0px 4px 0px 0px #1a1a1a;
+}
+.neo-button:hover {
+  @apply translate-y-[2px];
+  box-shadow: 0px 2px 0px 0px #1a1a1a;
+}
+.neo-button:active {
+  @apply translate-y-[4px];
+  box-shadow: 0px 0px 0px 0px #1a1a1a;
 }
 
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+.neo-card {
+  @apply bg-surface border-2 border-accent-java rounded-2xl p-8;
+  box-shadow: 4px 4px 0px 0px #1a1a1a;
 }
 

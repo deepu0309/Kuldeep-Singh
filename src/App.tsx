@@ -16,11 +16,13 @@ import {
   Code2,
   Box,
   Activity,
-  Layers
+  Layers,
+  Sparkles,
+  Zap,
+  CheckCircle2,
+  Phone
 } from 'lucide-react';
 
-import SymbolRain from './components/SymbolRain';
-import CustomCursor from './components/CustomCursor';
 import LightSpeedPreloader from './components/LightSpeedPreloader';
 
 // --- Types ---
@@ -47,14 +49,14 @@ interface Experience {
 
 // --- Data ---
 const SKILLS: Skill[] = [
-  { icon: <Terminal className="w-5 h-5 text-accent-spring" />, name: "Java 17+", cat: "language", level: 95 },
-  { icon: <Code2 className="w-5 h-5 text-accent-spring" />, name: "Spring Boot", cat: "framework", level: 92 },
-  { icon: <Database className="w-5 h-5 text-accent-spring" />, name: "PostgreSQL", cat: "database", level: 88 },
-  { icon: <Activity className="w-5 h-5 text-accent-spring" />, name: "Grafana", cat: "monitoring", level: 85 },
-  { icon: <ShieldCheck className="w-5 h-5 text-accent-spring" />, name: "JVM Tuning", cat: "devops", level: 80 },
-  { icon: <Layers className="w-5 h-5 text-accent-spring" />, name: "Azure", cat: "cloud", level: 85 },
-  { icon: <Box className="w-5 h-5 text-accent-spring" />, name: "MS365 API", cat: "integration", level: 80 },
-  { icon: <Activity className="w-5 h-5 text-accent-spring" />, name: "Microservices", cat: "architecture", level: 82 },
+  { icon: <Terminal className="w-5 h-5" />, name: "Java 17+", cat: "language", level: 95 },
+  { icon: <Code2 className="w-5 h-5" />, name: "Spring Boot", cat: "framework", level: 92 },
+  { icon: <Database className="w-5 h-5" />, name: "PostgreSQL", cat: "database", level: 88 },
+  { icon: <Activity className="w-5 h-5" />, name: "Grafana", cat: "monitoring", level: 85 },
+  { icon: <ShieldCheck className="w-5 h-5" />, name: "JVM Tuning", cat: "devops", level: 80 },
+  { icon: <Layers className="w-5 h-5" />, name: "Azure", cat: "cloud", level: 85 },
+  { icon: <Box className="w-5 h-5" />, name: "MS365 API", cat: "integration", level: 80 },
+  { icon: <Activity className="w-5 h-5" />, name: "Microservices", cat: "architecture", level: 82 },
 ];
 
 const PROJECTS: Project[] = [
@@ -104,24 +106,22 @@ const EXPERIENCE: Experience[] = [
 const BackgroundParticles = () => {
   return (
     <div className="fixed inset-0 pointer-events-none z-0">
-      <div className="absolute inset-0 bg-[radial-gradient(#6db33f_1px,transparent_1px)] [background-size:40px_40px] opacity-10"></div>
-      <div className="absolute inset-0 bg-[#080810] [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(#1a1a1a_0.5px,transparent_0.5px)] [background-size:32px_32px] opacity-[0.03]"></div>
       {/* Noise Overlay */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] brightness-100 contrast-150"></div>
+      <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
     </div>
   );
 };
 
 const FadeIn = ({ children, delay = 0, x = 0, y = 40 }: { children: React.ReactNode, delay?: number, x?: number, y?: number }) => (
   <motion.div
-    initial={{ opacity: 0, x, y, scale: 0.95, skewY: 2 }}
-    whileInView={{ opacity: 1, x: 0, y: 0, scale: 1, skewY: 0 }}
-    viewport={{ once: true, margin: "-100px" }}
+    initial={{ opacity: 0, x, y, scale: 0.98 }}
+    whileInView={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+    viewport={{ once: true, margin: "-50px" }}
     transition={{ 
       duration: 0.8, 
       delay, 
-      ease: [0.16, 1, 0.3, 1],
-      scale: { type: "spring", damping: 20, stiffness: 100 }
+      ease: [0.16, 1, 0.3, 1]
     }}
   >
     {children}
@@ -129,10 +129,11 @@ const FadeIn = ({ children, delay = 0, x = 0, y = 40 }: { children: React.ReactN
 );
 
 const SectionLabel = ({ text, centered = false }: { text: string, centered?: boolean }) => (
-  <div className={`flex items-center gap-4 mb-2 ${centered ? 'justify-center' : ''}`}>
-    <div className="w-8 h-[1px] bg-accent-spring"></div>
-    <span className="font-mono text-[10px] tracking-widest text-accent-spring uppercase">{text}</span>
-    {centered && <div className="w-8 h-[1px] bg-accent-spring"></div>}
+  <div className={`flex items-center gap-3 mb-6 ${centered ? 'justify-center' : ''}`}>
+    <div className="bg-accent-spring border border-accent-java px-4 py-1.5 rounded-full neo-shadow flex items-center gap-2">
+      <Zap className="w-3.5 h-3.5 fill-accent-java" />
+      <span className="font-bold text-[10px] tracking-tight text-accent-java uppercase">{text}</span>
+    </div>
   </div>
 );
 
@@ -167,92 +168,134 @@ export default function App() {
   }, [loading]);
 
   return (
-    <div className="min-h-screen selection:bg-accent-spring selection:text-bg">
+    <div className="min-h-screen selection:bg-accent-spring selection:text-accent-java">
       <AnimatePresence>
         {loading && <LightSpeedPreloader onComplete={() => setLoading(false)} />}
       </AnimatePresence>
 
       <div className={loading ? 'hidden' : 'block'}>
-        <CustomCursor />
-        <SymbolRain />
         <BackgroundParticles />
         
-        {/* Progress Bar */}
-        <motion.div 
-          className="fixed top-0 left-0 right-0 h-1 bg-accent-spring z-[100] origin-left"
-          style={{ scaleX }}
-        />
-
         {/* Nav */}
         <motion.nav 
           initial={{ y: -100 }}
           animate={{ y: 0 }}
           transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed top-0 left-0 right-0 z-50 bg-bg/80 backdrop-blur-xl border-b border-white/5 py-4 px-6 md:px-12 flex justify-between items-center"
+          className="fixed top-0 left-0 right-0 z-50 bg-bg/80 backdrop-blur-xl border-b border-accent-java/10 py-4 md:py-6 px-4 md:px-12 flex justify-between items-center"
         >
-        <a href="#hero" className="font-mono font-bold text-accent-spring hover:glow-spring transition-all">
-          &lt;kuldeep.java /&gt;
+        <a href="#hero" className="flex items-center gap-2 group">
+          <div className="w-8 h-8 md:w-10 md:h-10 bg-accent-spring rounded-lg border-2 border-accent-java flex items-center justify-center neo-shadow group-hover:translate-x-[1px] group-hover:translate-y-[1px] group-hover:shadow-none transition-all">
+            <Cpu className="w-5 h-5 md:w-6 md:h-6" />
+          </div>
+          <span className="font-bold text-base md:text-lg tracking-tighter">KULDEEP.SPRING</span>
         </a>
-        <div className="hidden md:flex gap-8 font-mono text-xs uppercase tracking-tighter text-muted">
-          <a href="#about" className="hover:text-accent-spring transition-colors">01. init()</a>
-          <a href="#skills" className="hover:text-accent-spring transition-colors">02. getDeps()</a>
-          <a href="#projects" className="hover:text-accent-spring transition-colors">03. exec()</a>
-          <a href="#contact" className="hover:text-accent-spring transition-colors">04. exit()</a>
+        <div className="hidden md:flex gap-10 font-bold text-[13px] uppercase tracking-tight text-accent-java">
+          <a href="#about" className="hover:text-accent-spring transition-colors">Dashboard</a>
+          <a href="#skills" className="hover:text-accent-spring transition-colors">Stack</a>
+          <a href="#projects" className="hover:text-accent-spring transition-colors">Architecture</a>
+          <a href="#contact" className="hover:text-accent-spring transition-colors">Connect</a>
         </div>
+        <a href="#contact" className="bg-accent-java text-white px-4 md:px-6 py-1.5 md:py-2 rounded-full font-bold text-xs md:text-sm neo-shadow-hover transition-all">
+          JOIN NOW
+        </a>
       </motion.nav>
 
-      <main className="relative z-10 mx-auto max-w-7xl px-6 md:px-12 space-y-32 py-32">
+      <main className="relative z-10 mx-auto max-w-7xl px-6 md:px-12 space-y-48 py-32">
         
         {/* --- Hero Section --- */}
-        <section id="hero" className="min-h-[80vh] flex flex-col justify-center items-center text-center">
-          <SectionLabel text="Backend software engineer" centered />
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-5xl md:text-8xl font-extrabold tracking-tighter leading-[0.9] mb-8 max-w-4xl"
-          >
-            Architecting <span className="text-accent-spring">resilient</span> systems for the <span className="text-accent-java">enterprise.</span>
-          </motion.h1>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="max-w-xl text-muted font-mono text-sm leading-relaxed mb-12"
-          >
-            I design, build, and optimize high-performance backend infrastructure. 
-            Specializing in Java, Spring Boot, and robust enterprise integrations with real-time JVM monitoring.
-          </motion.p>
+        <section id="hero" className="min-h-[70vh] md:min-h-[85vh] grid md:grid-cols-2 gap-12 items-center pt-20 md:pt-0">
+          <div className="text-left order-2 md:order-1 pt-8 md:pt-0">
+            <SectionLabel text="WELCOME TO MY PORTFOLIO" />
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-4xl sm:text-6xl md:text-8xl font-black tracking-tight leading-[0.85] mb-6 md:mb-8"
+            >
+              FIND THE <br/>
+              <span className="relative inline-block">
+                BEST CORE
+                <div className="absolute bottom-1 md:bottom-2 left-0 w-full h-2 md:h-4 bg-accent-spring -z-10" />
+              </span> <br/>
+              FOR SYSTEMS
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="max-w-xl text-muted font-medium text-base md:text-lg leading-relaxed mb-8 md:mb-12"
+            >
+              Specialized backend software engineer focused on high-performance systems. 
+              Expert in microservices, database architecture, and API scaling.
+            </motion.p>
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="flex flex-wrap gap-4 md:gap-6"
+            >
+              <a href="#projects" className="neo-button scale-100 md:scale-110">
+                GET STARTED <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
+              </a>
+              <a href="#about" className="bg-accent-java text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-bold text-sm md:text-base neo-shadow-hover transition-all">
+                BROWSE STACK
+              </a>
+            </motion.div>
+          </div>
+
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="flex flex-wrap gap-4 justify-center"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            className="relative order-1 md:order-2"
           >
-            <a href="#projects" className="bg-accent-spring text-bg px-8 py-3 rounded font-mono text-xs font-bold hover:translate-y-[-2px] transition-transform flex items-center gap-2">
-              View Architecture <ChevronRight className="w-4 h-4" />
-            </a>
-            <a href="#contact" className="border border-white/10 px-8 py-3 rounded font-mono text-xs hover:border-accent-spring hover:text-accent-spring transition-all">
-              Initialize Connection
-            </a>
+            <div className="neo-card bg-white p-8 md:p-12 max-w-sm md:max-w-md mx-auto md:ml-auto">
+              <div className="w-12 h-12 md:w-16 md:h-16 bg-accent-spring rounded-full border-2 border-accent-java flex items-center justify-center mx-auto mb-6 md:mb-8 neo-shadow">
+                <Sparkles className="w-6 h-6 md:w-8 md:h-8" />
+              </div>
+              <h3 className="text-xl md:text-2xl font-black text-center mb-2 tracking-tight">JOIN THE NETWORK</h3>
+              <p className="text-muted text-center text-xs md:text-sm mb-6 md:mb-8 font-medium italic">Enter your requirements to get started</p>
+              
+              <div className="space-y-4">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold uppercase tracking-widest ml-1 opacity-60">Project Scale</label>
+                  <div className="border-2 border-accent-java rounded-xl p-3 md:p-4 flex justify-between items-center bg-bg/50">
+                    <span className="font-bold text-sm">Enterprise Microservices</span>
+                    <ChevronRight className="w-4 h-4" />
+                  </div>
+                </div>
+                <button className="w-full bg-accent-spring border-2 border-accent-java rounded-xl py-4 md:py-5 font-black text-base md:text-lg neo-shadow-hover transition-all mt-4">
+                  COMPLY NOW
+                </button>
+              </div>
+              <p className="text-[9px] md:text-[10px] text-muted text-center mt-5 md:mt-6 font-medium">By connecting, you agree to technical T&C and SLA policies</p>
+            </div>
+            {/* Float Element */}
+            <motion.div 
+              animate={{ y: [0, -20, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -bottom-6 md:-bottom-10 -left-4 md:-left-10 bg-white border-2 border-accent-java p-3 md:p-4 rounded-xl md:rounded-2xl neo-shadow flex items-center gap-2 md:gap-3 z-20"
+            >
+              <div className="w-8 h-8 md:w-10 md:h-10 bg-green-400 rounded-full border-2 border-accent-java flex items-center justify-center">
+                <CheckCircle2 className="w-5 h-5 md:w-6 md:h-6 text-white" />
+              </div>
+              <div>
+                <div className="font-black text-[10px] md:text-xs">99.9% UPTIME</div>
+                <div className="text-[8px] md:text-[10px] text-muted font-bold">CORE ESTABLISHED</div>
+              </div>
+            </motion.div>
           </motion.div>
         </section>
 
         {/* --- About Section --- */}
         <section id="about" className="scroll-mt-32">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
+          <div className="grid md:grid-cols-2 gap-12 md:gap-24 items-center">
             <FadeIn x={-50}>
-              <div className="relative aspect-[4/5] bg-surface rounded-xl overflow-hidden border border-white/5 group">
-                <div className="absolute inset-0 bg-accent-spring/10 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
-                
-                {/* 
-                  To use your own image: 
-                  Place a file named 'profile.jpg' in your public folder 
-                */}
+              <div className="relative aspect-[4/5] bg-surface rounded-2xl md:rounded-3xl overflow-hidden border-2 border-accent-java group neo-shadow">
                 <img 
                   id="profile-img" 
                   src="/profile.jpg" 
                   alt="Kuldeep Singh" 
-                  className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-500 group-hover:scale-105"
+                  className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-110"
                   onError={(e) => {
                     (e.target as HTMLImageElement).style.display = 'none';
                     document.getElementById('placeholder-content')?.classList.remove('hidden');
@@ -263,32 +306,34 @@ export default function App() {
                   }}
                 />
 
-                <div id="placeholder-content" className="absolute inset-0 flex flex-col items-center justify-center text-center p-8 bg-surface-brighter md:bg-surface">
-                  <Coffee className="w-12 h-12 text-accent-spring mb-4 opacity-20" />
-                  <p className="font-mono text-xs text-muted leading-relaxed">
-                    // profile.jpg not found <br/>
-                    Awaiting bio-metric scan <br/>
-                    in /public directory...
+                <div id="placeholder-content" className="absolute inset-0 flex flex-col items-center justify-center text-center p-8 bg-surface">
+                  <Coffee className="w-12 h-12 md:w-16 md:h-16 text-accent-spring mb-4" />
+                  <p className="font-bold text-base md:text-lg leading-tight uppercase tracking-tighter">
+                    profile.jpg <br/>
+                    AWAITING SCAN
                   </p>
                 </div>
 
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-accent-spring/20 border border-accent-spring/40 px-3 py-1 rounded-full text-[10px] font-mono text-accent-spring z-20">
-                  // my jpg
+                <div className="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 bg-accent-spring border-2 border-accent-java px-4 md:px-6 py-1.5 md:py-2 rounded-full text-[10px] md:text-xs font-black z-20 neo-shadow whitespace-nowrap">
+                  KULDEEP SINGH
                 </div>
               </div>
             </FadeIn>
             
-            <div className="space-y-8">
+            <div className="space-y-8 md:space-y-10">
               <FadeIn delay={0.2}>
-                <SectionLabel text="01. init()" />
-                <h2 className="text-4xl font-bold tracking-tight mb-6">Who I am</h2>
-                <div className="font-mono text-sm text-muted leading-8 space-y-4">
+                <div className="bg-accent-spring/20 border border-accent-spring px-4 py-1.5 rounded-full inline-flex items-center gap-2 mb-6">
+                  <div className="w-2 h-2 bg-accent-spring rounded-full animate-pulse" />
+                  <span className="font-bold text-[10px] uppercase tracking-widest text-accent-java">WHO I AM</span>
+                </div>
+                <h2 className="text-4xl md:text-5xl font-black tracking-tighter mb-6 md:mb-8 leading-none">ENGINEER & <br className="hidden md:block" /> ARCHITECT.</h2>
+                <div className="text-base md:text-lg text-muted font-medium leading-relaxed space-y-6">
                   <p>
-                    Hey — I'm <span className="text-white font-bold">Kuldeep Singh</span>, a software engineer based in Gurugram who thrives on solving 
+                    Hey — I'm <span className="text-accent-java font-bold underline decoration-accent-spring decoration-4">Kuldeep Singh</span>, a software engineer based in Gurugram who thrives on solving 
                     complex data synchronization and infrastructure challenges.
                   </p>
                   <p>
-                    I specialize in <span className="text-accent-spring">Java and Spring Boot</span> backend development, 
+                    I specialize in <span className="text-accent-java font-bold">Java and Spring Boot</span> backend development, 
                     focusing on scalable microservices, managing inventory logic, 
                     and ensuring bulletproof database integrations.
                   </p>
@@ -296,15 +341,15 @@ export default function App() {
               </FadeIn>
 
               <FadeIn delay={0.4}>
-                <div className="grid grid-cols-3 gap-1 border border-white/5 bg-white/5 rounded-lg overflow-hidden">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
                   {[
-                    { n: "100%", l: "Uptime" },
-                    { n: "O(1)", l: "Efficiency" },
-                    { n: "∞", l: "Tea" }
+                    { n: "100%", l: "SYSTEM Uptime" },
+                    { n: "O(1)", l: "Logic SCALE" },
+                    { n: "∞", l: "TEA COFFEE" }
                   ].map((s, i) => (
-                    <div key={i} className="bg-surface p-6 text-center hover:bg-surface-brighter transition-colors">
-                      <div className="text-2xl font-bold text-accent-spring">{s.n}</div>
-                      <div className="text-[10px] font-mono text-muted uppercase tracking-widest mt-1">{s.l}</div>
+                    <div key={i} className="neo-card p-4 md:p-6 text-center hover:bg-accent-spring transition-all duration-300 group">
+                      <div className="text-2xl md:text-3xl font-black text-accent-java group-hover:scale-110 transition-transform">{s.n}</div>
+                      <div className="text-[9px] md:text-[10px] font-bold text-muted uppercase tracking-tight mt-1 md:mt-2 opacity-60">{s.l}</div>
                     </div>
                   ))}
                 </div>
@@ -316,29 +361,30 @@ export default function App() {
         {/* --- Skills Section --- */}
         <section id="skills" className="scroll-mt-32 text-center flex flex-col items-center">
           <FadeIn>
-            <SectionLabel text="02. getDependencies()" centered />
-            <h2 className="text-4xl font-bold tracking-tight mb-12">Tech Stack</h2>
+            <SectionLabel text="AVAILABLE RIGHT NOW" centered />
+            <h2 className="text-3xl md:text-5xl font-black tracking-tighter mb-10 md:mb-16">TECH STACK ENGINE</h2>
           </FadeIn>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-white/5 border border-white/5 rounded-xl overflow-hidden w-full">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 w-full">
             {SKILLS.map((s, i) => (
               <motion.div 
                 key={i}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.05 }}
-                whileHover={{ backgroundColor: "#17172a", y: -4 }}
-                className="bg-surface p-8 group transition-all text-left"
+                className="neo-card flex flex-col items-center text-center group hover:bg-accent-spring transition-colors p-6 md:p-8"
               >
-                <div className="mb-4 transform group-hover:scale-110 transition-transform">{s.icon}</div>
-                <div className="font-mono text-sm font-bold mb-1">{s.name}</div>
-                <div className="font-mono text-[9px] text-muted uppercase mb-4">{s.cat}</div>
-                <div className="h-1 bg-white/5 rounded-full overflow-hidden">
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-bg border-2 border-accent-java rounded-lg md:rounded-xl flex items-center justify-center mb-4 md:mb-6 group-hover:bg-white transition-colors neo-shadow">
+                  {React.cloneElement(s.icon as React.ReactElement, { className: "w-5 h-5 md:w-6 md:h-6" })}
+                </div>
+                <div className="font-black text-base md:text-lg mb-1 uppercase tracking-tight whitespace-nowrap">{s.name}</div>
+                <div className="font-bold text-[9px] md:text-[10px] text-muted uppercase mb-4 md:mb-6 opacity-60 tracking-widest">{s.cat}</div>
+                <div className="w-full h-2 md:h-3 bg-bg border-2 border-accent-java rounded-full overflow-hidden p-[1px] md:p-[2px]">
                   <motion.div 
                     initial={{ width: 0 }}
                     whileInView={{ width: `${s.level}%` }}
-                    transition={{ duration: 1, delay: 0.3 + (i * 0.05) }}
-                    className="h-full bg-accent-spring"
+                    transition={{ duration: 1.5, delay: 0.3 + (i * 0.05) }}
+                    className="h-full bg-accent-spring rounded-full"
                   />
                 </div>
               </motion.div>
@@ -349,33 +395,32 @@ export default function App() {
         {/* --- Projects Section --- */}
         <section id="projects" className="scroll-mt-32">
           <FadeIn>
-            <SectionLabel text="03. execute()" centered />
-            <h2 className="text-4xl font-bold tracking-tight mb-12 text-center">Architecture</h2>
+            <SectionLabel text="NEAR YOU · GURUGRAM" centered />
+            <h2 className="text-4xl md:text-5xl font-black tracking-tighter mb-10 md:mb-16 text-center italic uppercase leading-none">AVAILABLE <br className="md:hidden" /> ARCHITECTURE</h2>
           </FadeIn>
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
             {PROJECTS.map((p, i) => (
               <div key={i}>
                 <FadeIn delay={i * 0.1}>
                   <motion.div 
-                    whileHover={{ y: -8, borderColor: "rgba(109, 179, 63, 0.6)" }}
-                    className="group p-8 bg-surface border border-white/5 rounded-xl transition-all relative overflow-hidden h-full"
+                    whileHover={{ y: -5, scale: 1.01 }}
+                    className="neo-card group h-full relative overflow-hidden p-6 md:p-10"
                   >
-                    <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-accent-spring to-accent-java scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
-                    <div className="flex justify-between items-start mb-6">
-                      <div className="p-3 bg-accent-spring/10 rounded-lg text-accent-spring group-hover:bg-accent-spring group-hover:text-bg transition-colors">
-                        {p.icon}
+                    <div className="flex justify-between items-start mb-6 md:mb-8">
+                      <div className="w-12 h-12 md:w-14 md:h-14 bg-bg border-2 border-accent-java rounded-xl md:rounded-2xl flex items-center justify-center text-accent-java neo-shadow group-hover:bg-accent-spring transition-colors">
+                        {React.cloneElement(p.icon as React.ReactElement, { className: "w-6 h-6 md:w-7 md:h-7" })}
                       </div>
-                      <a href="#" className="p-2 text-muted hover:text-accent-spring transition-colors">
-                        <ExternalLink className="w-4 h-4" />
+                      <a href="#" className="p-1.5 md:p-2 bg-bg border-2 border-accent-java rounded-lg text-accent-java neo-shadow hover:translate-y-px transition-all">
+                        <ExternalLink className="w-4 h-4 md:w-5 md:h-5" />
                       </a>
                     </div>
-                    <h3 className="text-xl font-bold mb-3">{p.name}</h3>
-                    <p className="font-mono text-xs text-muted leading-relaxed mb-6">
+                    <h3 className="text-xl md:text-2xl font-black mb-3 md:mb-4 uppercase tracking-tighter leading-none">{p.name}</h3>
+                    <p className="font-medium text-muted text-xs md:text-sm leading-relaxed mb-6 md:mb-8">
                       {p.desc}
                     </p>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-2 md:gap-3">
                       {p.tags.map((t, j) => (
-                        <span key={j} className="px-2 py-1 bg-accent-spring/5 border border-accent-spring/10 rounded text-[9px] font-mono text-accent-spring font-bold">
+                        <span key={j} className="px-3 md:px-4 py-1 md:py-1.5 bg-bg border-2 border-accent-java rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest whitespace-nowrap">
                           {t}
                         </span>
                       ))}
@@ -389,22 +434,22 @@ export default function App() {
 
         {/* --- Experience Section --- */}
         <section id="experience" className="scroll-mt-32 max-w-4xl">
-          <SectionLabel text="04. stackTrace()" />
-          <h2 className="text-4xl font-bold tracking-tight mb-12">History</h2>
-          <div className="space-y-12">
+          <SectionLabel text="HISTORY LOG" />
+          <h2 className="text-3xl md:text-5xl font-black tracking-tighter mb-12 md:mb-16 italic uppercase leading-none">SYSTEM TRACKS</h2>
+          <div className="space-y-12 md:space-y-16">
             {EXPERIENCE.map((e, i) => (
-              <div key={i} className="flex gap-8 group">
-                <div className="hidden md:block w-32 shrink-0 text-right pt-1">
-                  <span className="font-mono text-[10px] text-muted tracking-widest">{e.date}</span>
+              <div key={i} className="flex flex-col md:flex-row gap-4 md:gap-10 group">
+                <div className="md:w-40 shrink-0 md:text-right md:pt-2">
+                  <span className="font-black text-[10px] md:text-xs text-muted tracking-tight opacity-40 md:opacity-60 uppercase">{e.date}</span>
                 </div>
-                <div className="relative">
-                  <div className="w-px h-full bg-white/5 absolute left-1/2 -translate-x-1/2 top-4" />
-                  <div className="w-3 h-3 rounded-full bg-accent-spring shadow-[0_0_12px_rgba(109,179,63,0.6)] relative z-10" />
+                <div className="relative hidden md:block">
+                  <div className="w-1 h-full bg-accent-java/10 absolute left-1/2 -translate-x-1/2 top-4 rounded-full" />
+                  <div className="w-6 h-6 rounded-full bg-accent-spring border-2 border-accent-java neo-shadow relative z-10 group-hover:scale-125 transition-transform" />
                 </div>
-                <div className="space-y-2">
-                  <h3 className="text-xl font-bold group-hover:text-accent-spring transition-colors">{e.role}</h3>
-                  <div className="font-mono text-xs text-accent-spring font-bold">@ {e.company}</div>
-                  <p className="font-mono text-xs text-muted leading-relaxed pt-2">
+                <div className="space-y-3 md:space-y-4">
+                  <h3 className="text-2xl md:text-3xl font-black tracking-tight leading-none uppercase group-hover:text-accent-spring transition-colors">{e.role}</h3>
+                  <div className="inline-block bg-accent-java text-white px-3 md:px-4 py-1 rounded-full text-[10px] md:text-xs font-black">@ {e.company}</div>
+                  <p className="text-muted font-medium text-xs md:text-base leading-relaxed pt-1 md:pt-2 max-w-2xl">
                     {e.desc}
                   </p>
                 </div>
@@ -414,42 +459,56 @@ export default function App() {
         </section>
 
         {/* --- Contact Section --- */}
-        <section id="contact" className="scroll-mt-32 max-w-2xl">
-          <SectionLabel text="05. POST /contact" />
-          <h2 className="text-5xl font-extrabold tracking-tighter mb-8 leading-none">
-            Let's compile <br/> something great.
-          </h2>
-          <p className="font-mono text-sm text-muted leading-relaxed mb-12">
-            Currently open to new opportunities to build robust backend systems. 
-            Whether you have a complex ERP integration or a microservices challenge, my inbox is open.
-          </p>
-          
-          <div className="grid sm:grid-cols-2 gap-4 mb-16">
-            {[
-              { icon: <Mail />, l: "email", v: "hello@kuldeepsingh.dev" },
-              { icon: <Github />, l: "github", v: "github.com/kuldeep-java" },
-              { icon: <Linkedin />, l: "linkedin", v: "linkedin.com/in/kuldeep" },
-              { icon: <MapPin />, l: "location", v: "Gurugram, HR" }
-            ].map((c, i) => (
-              <motion.a 
-                href="#"
-                key={i}
-                whileHover={{ y: -2, borderColor: "#6db33f" }}
-                className="flex items-center gap-4 p-4 bg-surface border border-white/5 rounded-lg transition-colors"
-              >
-                <span className="text-accent-spring opacity-70">{c.icon}</span>
-                <div className="overflow-hidden">
-                  <div className="text-[9px] font-mono text-muted uppercase tracking-widest">{c.l}</div>
-                  <div className="text-xs font-mono text-white truncate">{c.v}</div>
-                </div>
-              </motion.a>
-            ))}
-          </div>
+        <section id="contact" className="scroll-mt-32 max-w-4xl">
+          <div className="neo-card bg-accent-spring text-accent-java p-8 md:p-20 relative overflow-hidden">
+            <div className="absolute top-4 md:top-10 right-4 md:right-10 opacity-10 md:opacity-20 rotate-12 -z-0">
+              <Zap className="w-20 h-20 md:w-32 md:h-32 fill-accent-java" />
+            </div>
+            
+            <div className="relative z-10">
+              <SectionLabel text="STAY CONNECTED" />
+              <h2 className="text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter mb-8 md:mb-10 leading-[0.85] uppercase">
+                LET'S COMPILE <br/> 
+                <span className="text-bg drop-shadow-[2px_2px_0px_#1a1a1a]">SOMETHING GREAT</span>
+              </h2>
+              <p className="font-bold text-base md:text-xl leading-relaxed mb-12 md:mb-16 max-w-2xl">
+                Currently open to new opportunities to build robust backend systems. 
+                Whether you have a complex ERP integration or a microservices challenge, my inbox is open.
+              </p>
+              
+              <div className="grid sm:grid-cols-2 gap-4 md:gap-8 mb-12 md:mb-16">
+                {[
+                  { icon: <Mail />, l: "email", v: "hello@kuldeepsingh.dev" },
+                  { icon: <Github />, l: "github", v: "github.com/kuldeep-java" },
+                  { icon: <Linkedin />, l: "linkedin", v: "linkedin.com/in/kuldeep" },
+                  { icon: <Phone />, l: "phone", v: "+91 (GURUGRAM)" }
+                ].map((c, i) => (
+                  <motion.a 
+                    href="#"
+                    key={i}
+                    className="flex items-center gap-4 md:gap-6 p-4 md:p-6 bg-white border-2 border-accent-java rounded-xl md:rounded-2xl neo-shadow-hover transition-all overflow-hidden"
+                  >
+                    <div className="w-10 h-10 md:w-12 md:h-12 bg-accent-spring border-2 border-accent-java rounded-lg md:rounded-xl flex items-center justify-center shrink-0">
+                      {React.cloneElement(c.icon as React.ReactElement, { className: "w-5 h-5 md:w-6 md:h-6" })}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="text-[9px] md:text-[10px] font-black text-muted uppercase tracking-widest opacity-60 mb-0.5 md:mb-1">{c.l}</div>
+                      <div className="text-xs md:text-base font-black uppercase tracking-tight break-all">{c.v}</div>
+                    </div>
+                  </motion.a>
+                ))}
+              </div>
 
-          <footer className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between gap-4 text-[10px] font-mono text-muted uppercase tracking-widest">
-            <div>© 2026 Kuldeep Singh. All rights reserved.</div>
-            <div>Built with <span className="text-accent-java">Spring</span> accents & clean code.</div>
-          </footer>
+              <footer className="pt-8 md:pt-12 border-t-2 border-accent-java/20 flex flex-col md:flex-row justify-between gap-4 md:gap-6 text-[9px] md:text-[11px] font-black uppercase tracking-tight opacity-70">
+                <div>© 2026 KULDEEP SINGH. ARCHITECTED FOR PERFORMANCE.</div>
+                <div className="flex flex-wrap items-center gap-4">
+                  <span>TERMS</span>
+                  <span>PRIVACY</span>
+                  <span className="text-white drop-shadow-[1px_1px_0px_#1a1a1a]">V2.0.42</span>
+                </div>
+              </footer>
+            </div>
+          </div>
         </section>
 
       </main>
