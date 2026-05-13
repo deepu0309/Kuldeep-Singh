@@ -157,14 +157,19 @@ export default function App() {
     const data = Object.fromEntries(formData.entries());
     
     try {
-      const key = import.meta.env.VITE_FORMSPREE_KEY || 'your_default_key';
-      const response = await fetch(`https://formspree.io/f/${key}`, {
+      const key = import.meta.env.VITE_STATIC_FORMS_KEY || 'your_default_key';
+      const response = await fetch(`https://api.staticforms.xyz/submit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          accessKey: key,
+          subject: 'New Connection Request - Portfolio'
+        }),
       });
       
-      if (response.ok) {
+      const result = await response.json();
+      if (result.success) {
         setIsSubmitted(true);
       }
     } catch (err) {
