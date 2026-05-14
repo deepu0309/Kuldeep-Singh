@@ -158,14 +158,21 @@ export default function App() {
     const data = Object.fromEntries(formData.entries());
     
     try {
-      const key = import.meta.env.VITE_STATIC_FORMS_KEY || 'your_default_key';
+      const key = import.meta.env.VITE_STATIC_FORMS_KEY;
+      if (!key) {
+        setIsSubmitting(false);
+        alert('Configuration Missing: Please set VITE_STATIC_FORMS_KEY in your deployment environment variables.');
+        return;
+      }
+      
       const response = await fetch(`https://api.staticforms.xyz/submit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...data,
-          accessKey: key,
-          subject: 'New Connection Request - Portfolio'
+          accessKey: key || '',
+          subject: 'New Connection Request - Portfolio',
+          replyTo: '@' // Encourages service to use the email field for replies if present
         }),
       });
       

@@ -2,5 +2,5 @@
   "name": "Kuldeep Singh Portfolio",
   "description": "A high-performance backend engineer portfolio built with Express, React, and Tailwind CSS.",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
