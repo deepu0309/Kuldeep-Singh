@@ -22,7 +22,6 @@ import {
   Zap,
   CheckCircle2,
   Phone,
-  Heart,
   Smartphone,
   Globe,
   Crown,
@@ -41,11 +40,17 @@ interface Skill {
   level: number;
 }
 
+interface ArchNode {
+  label: string;
+  type: 'client' | 'gate' | 'service' | 'db' | 'external';
+}
+
 interface Project {
   icon: React.ReactNode;
   name: string;
   desc: string;
   tags: string[];
+  arch: ArchNode[];
 }
 
 interface Experience {
@@ -72,25 +77,53 @@ const PROJECTS: Project[] = [
     icon: <Database className="w-6 h-6" />, 
     name: "ERP Billing & Inventory Engine", 
     desc: "High-performance enterprise middleware for MS Business Central 365. Engineered to eliminate frontal user licensing costs through custom API-driven inventory, billing, and transfer modules. Deployed across 20+ states.", 
-    tags: ["Spring Boot", "BC365 API", "MSSQL", "Enterprise Security"] 
+    tags: ["Spring Boot", "BC365 API", "MSSQL", "Enterprise Security"],
+    arch: [
+      { label: "React Frontend", type: "client" },
+      { label: "Spring Security", type: "gate" },
+      { label: "Inventory Srv", type: "service" },
+      { label: "MS BC365", type: "external" },
+      { label: "MS SQL Server", type: "db" }
+    ]
   },
   { 
     icon: <MapPin className="w-6 h-6" />, 
     name: "AIS140 Fleet Intel Engine", 
     desc: "Mission-critical backend for AIS140 compliant device tracking across 20+ states. Engineered a high-throughput architecture with TCP listeners and RabbitMQ. Implemented Firebase FCM for cross-platform notifications and JWT for hardened API security.", 
-    tags: ["Spring Boot", "TCP Listener", "RabbitMQ", "Firebase FCM", "JWT Security"] 
+    tags: ["Spring Boot", "TCP Listener", "RabbitMQ", "Firebase FCM", "JWT Security"],
+    arch: [
+      { label: "GPS Hardware", type: "client" },
+      { label: "Netty TCP", type: "gate" },
+      { label: "RabbitMQ", type: "service" },
+      { label: "Cassandra/PG", type: "db" },
+      { label: "FCM Push", type: "external" }
+    ]
   },
   { 
     icon: <ShieldCheck className="w-6 h-6" />, 
     name: "AIS140 Grievance Ecosystem", 
     desc: "State-mandated grievance portal for AIS140 compliance. Integrated MSG91 for Secure Mobile OTP login and engineered inter-application SSO for unified access. Features full SLA tracking, automated escalation, and agent resolution metrics.", 
-    tags: ["Spring Boot", "MSG91 SMS", "JWT", "SLA Tracking"] 
+    tags: ["Spring Boot", "MSG91 SMS", "JWT", "SLA Tracking"],
+    arch: [
+      { label: "Citizen App", type: "client" },
+      { label: "OAuth/SSO", type: "gate" },
+      { label: "Ticket Engine", type: "service" },
+      { label: "MSG91 OTP", type: "external" },
+      { label: "PostgreSQL", type: "db" }
+    ]
   },
   { 
     icon: <Terminal className="w-6 h-6" />, 
     name: "Enterprise VMS Network", 
     desc: "Digital reception intelligence for multi-location facilities. Features Mobile OTP verification, repeat visitor photo-detection, and hierarchical card-to-floor assignment. Automated host workflows for rescheduling/rejection via email, with real-time employee data refresh using Azure Graph APIs.", 
-    tags: ["Spring Boot", "Azure Graph API", "OTP Auth", "Email SMTP"] 
+    tags: ["Spring Boot", "Azure Graph API", "OTP Auth", "Email SMTP"],
+    arch: [
+      { label: "Kiosk UI", type: "client" },
+      { label: "Azure AD", type: "gate" },
+      { label: "Visitor Srv", type: "service" },
+      { label: "Azure Graph", type: "external" },
+      { label: "MSSQL", type: "db" }
+    ]
   }
 ];
 
@@ -173,9 +206,68 @@ const SectionLabel = ({ text, centered = false }: { text: string, centered?: boo
   </div>
 );
 
+const ArchitectureBlueprint = ({ nodes }: { nodes: ArchNode[] }) => (
+  <motion.div 
+    initial={{ opacity: 0 }}
+    whileHover={{ opacity: 1 }}
+    className="absolute inset-0 bg-accent-java z-30 flex flex-col p-6 md:p-8 transition-opacity duration-300 overflow-hidden"
+  >
+    <div className="flex items-center justify-between mb-6 border-b border-white/20 pb-4">
+      <div className="flex items-center gap-2">
+        <Layers className="w-4 h-4 text-accent-spring" />
+        <span className="font-black text-[10px] uppercase tracking-widest text-white">System Architecture</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+        <span className="text-[8px] font-mono text-accent-spring">STABLE_V2.4</span>
+      </div>
+    </div>
+    
+    <div className="flex-grow flex flex-col justify-center relative bg-white/5 rounded-xl border border-white/10 p-4">
+      <div className="space-y-4 relative z-10">
+        {nodes.map((node, idx) => (
+          <div key={idx} className="flex items-center gap-4 group/node">
+            <div className={`w-8 h-8 md:w-10 md:h-10 border-2 flex items-center justify-center text-[7px] font-black uppercase text-center leading-none transition-all duration-300
+              ${node.type === 'client' ? 'border-dashed border-white/40 text-accent-spring' : 
+                node.type === 'gate' ? 'border-white/80 bg-white/10 text-white' :
+                node.type === 'service' ? 'border-accent-spring bg-accent-spring/10 text-accent-spring' :
+                node.type === 'db' ? 'border-accent-java bg-white text-accent-java' :
+                'border-white/20 bg-white/5 text-gray-400'}
+            `}>
+              {node.type.charAt(0)}
+            </div>
+            <div className="flex-grow flex flex-col">
+              <span className="text-[9px] font-black text-white uppercase tracking-tighter truncate">{node.label}</span>
+              <span className="text-[7px] font-bold text-accent-spring/60 uppercase tracking-widest">{node.type}</span>
+            </div>
+            {idx < nodes.length - 1 && (
+              <div className="absolute left-[15px] md:left-[19px] top-full h-4 w-px bg-white/20" />
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Grid Lines Overlay */}
+      <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:16px_16px] -z-10" />
+    </div>
+
+    <div className="mt-6 flex justify-between items-center text-[8px] font-black text-accent-spring opacity-80 italic">
+      <div className="flex items-center gap-2">
+         <Activity className="w-3 h-3" />
+         <span>LATENCY: &lt;24MS</span>
+      </div>
+      <div className="flex gap-2">
+         <div className="w-2 h-0.5 bg-accent-spring/30" />
+         <div className="w-2 h-0.5 bg-accent-spring" />
+      </div>
+    </div>
+  </motion.div>
+);
+
 export default function App() {
   const [loading, setLoading] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState(false);
+
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -301,7 +393,7 @@ export default function App() {
           </a>
         </div>
       </motion.nav>
-
+      
       <main className="relative z-10 mx-auto max-w-7xl px-6 md:px-8 lg:px-12 space-y-32 md:space-y-48 py-32">
         
         {/* --- Hero Section --- */}
@@ -557,6 +649,7 @@ export default function App() {
                     whileHover={{ y: -5, scale: 1.01 }}
                     className="neo-card group h-full relative overflow-hidden p-6 md:p-8 lg:p-10 flex flex-col"
                   >
+                    <ArchitectureBlueprint nodes={p.arch} />
                     <div className="flex justify-between items-start mb-6 md:mb-8 shrink-0">
                       <div className="w-12 h-12 md:w-14 md:h-14 bg-bg border-2 border-accent-java rounded-xl md:rounded-2xl flex items-center justify-center text-accent-java neo-shadow group-hover:bg-accent-spring transition-colors">
                         {React.cloneElement(p.icon as React.ReactElement, { className: "w-6 h-6 md:w-7 md:h-7" })}
@@ -695,7 +788,7 @@ export default function App() {
         </section>
 
         {/* --- Hobbies Section --- */}
-        <section id="hobbies" className="scroll-mt-32">
+        <section id="hobbies" className="scroll-mt-32 relative">
           <SectionLabel text="BEYOND THE TERMINAL" />
           <h2 className="text-3xl md:text-5xl font-black tracking-tighter mb-12 md:mb-16 italic uppercase leading-none">SIDE QUESTS</h2>
           
@@ -718,21 +811,6 @@ export default function App() {
                 </FadeIn>
               </div>
             ))}
-          </div>
-
-          <div className="mt-12 md:mt-16 bg-accent-java text-bg p-8 md:p-12 rounded-3xl neo-shadow flex flex-col md:flex-row items-center justify-between gap-8">
-            <div className="flex items-center gap-6">
-              <div className="w-16 h-16 bg-accent-spring rounded-full border-2 border-white flex items-center justify-center shrink-0">
-                <Heart className="w-8 h-8 text-accent-java fill-current" />
-              </div>
-              <div className="text-center md:text-left">
-                <h4 className="text-xl md:text-2xl font-black uppercase tracking-tight">Open Source Mindset</h4>
-                <p className="text-sm md:text-base font-bold text-gray-400 mt-1">GIVING BACK TO THE COMMUNITY IS PART OF MY CORE LOGIC.</p>
-              </div>
-            </div>
-            <a href="https://github.com/deepu0309" target="_blank" rel="noopener noreferrer" className="bg-accent-spring text-accent-java px-8 py-4 rounded-xl font-black text-sm uppercase neo-shadow-hover transition-all whitespace-nowrap">
-              VIEW GITHUB OPS
-            </a>
           </div>
         </section>
 
