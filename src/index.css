@@ -8,14 +8,24 @@
   --color-accent-spring: #facc15; /* Yellow */
   --color-accent-java: #1a1a1a;   /* Black/Charcoal */
   --color-muted: #71717a;
+  --color-shadow: #1a1a1a;
 
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   --font-sans: "Public Sans", ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
+  .dark {
+    --color-bg: #121212;
+    --color-surface: #1e1e1e;
+    --color-surface-brighter: #262626;
+    --color-accent-java: #f3f4f1;
+    --color-muted: #a1a1aa;
+    --color-shadow: #000000;
+  }
+
   html, body {
-    @apply bg-bg text-accent-java font-sans;
+    @apply bg-bg text-accent-java font-sans transition-colors duration-300;
     overflow-x: hidden;
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -28,29 +38,29 @@
 }
 
 .neo-shadow {
-  box-shadow: 4px 4px 0px 0px #1a1a1a;
+  box-shadow: 4px 4px 0px 0px var(--color-shadow);
 }
 
 .neo-shadow-hover:hover {
-  box-shadow: 6px 6px 0px 0px #1a1a1a;
+  box-shadow: 6px 6px 0px 0px var(--color-shadow);
   transform: translate(-2px, -2px);
 }
 
 .neo-button {
   @apply bg-accent-spring text-accent-java border-2 border-accent-java font-bold px-6 py-3 rounded-full transition-all flex items-center gap-2;
-  box-shadow: 0px 4px 0px 0px #1a1a1a;
+  box-shadow: 0px 4px 0px 0px var(--color-shadow);
 }
 .neo-button:hover {
   @apply translate-y-[2px];
-  box-shadow: 0px 2px 0px 0px #1a1a1a;
+  box-shadow: 0px 2px 0px 0px var(--color-shadow);
 }
 .neo-button:active {
   @apply translate-y-[4px];
-  box-shadow: 0px 0px 0px 0px #1a1a1a;
+  box-shadow: 0px 0px 0px 0px var(--color-shadow);
 }
 
 .neo-card {
-  @apply bg-surface border-2 border-accent-java rounded-2xl p-8;
-  box-shadow: 4px 4px 0px 0px #1a1a1a;
+  @apply bg-surface border-2 border-accent-java rounded-2xl p-8 transition-colors duration-300;
+  box-shadow: 4px 4px 0px 0px var(--color-shadow);
 }
 

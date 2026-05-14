@@ -21,7 +21,14 @@ import {
   Sparkles,
   Zap,
   CheckCircle2,
-  Phone
+  Phone,
+  Heart,
+  Smartphone,
+  Globe,
+  Crown,
+  ScrollText,
+  Sun,
+  Moon
 } from 'lucide-react';
 
 import LightSpeedPreloader from './components/LightSpeedPreloader';
@@ -102,12 +109,39 @@ const EXPERIENCE: Experience[] = [
   },
 ];
 
+const HOBBIES = [
+  { 
+    icon: <Smartphone className="w-6 h-6 md:w-8 md:h-8" />, 
+    name: "Mobile Gaming", 
+    desc: "High-refresh-rate mechanics and competitive strategies. Always optimizing for the winning frame.",
+    color: "bg-red-400"
+  },
+  { 
+    icon: <Globe className="w-6 h-6 md:w-8 md:h-8" />, 
+    name: "Geopolitics", 
+    desc: "Analyzing the global 'backend'—decoding the complex logic behind world systems and power shifts.",
+    color: "bg-blue-400"
+  },
+  { 
+    icon: <Crown className="w-6 h-6 md:w-8 md:h-8" />, 
+    name: "Chess", 
+    desc: "Pure algorithmic battle. Pattern recognition and strategic depth across a 64-square grid.",
+    color: "bg-accent-spring"
+  },
+  { 
+    icon: <ScrollText className="w-6 h-6 md:w-8 md:h-8" />, 
+    name: "History", 
+    desc: "Tracing the legacy code of civilizations to understand how modern architecture was built.",
+    color: "bg-purple-400"
+  }
+];
+
 // --- Components ---
 
 const BackgroundParticles = () => {
   return (
     <div className="fixed inset-0 pointer-events-none z-0">
-      <div className="absolute inset-0 bg-[radial-gradient(#1a1a1a_0.5px,transparent_0.5px)] [background-size:32px_32px] opacity-[0.03]"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(var(--color-accent-java)_0.5px,transparent_0.5px)] [background-size:32px_32px] opacity-[0.05] dark:opacity-[0.1]"></div>
       {/* Noise Overlay */}
       <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
     </div>
@@ -141,6 +175,7 @@ const SectionLabel = ({ text, centered = false }: { text: string, centered?: boo
 
 export default function App() {
   const [loading, setLoading] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -186,6 +221,14 @@ export default function App() {
       setIsSubmitting(false);
     }
   };
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -235,17 +278,28 @@ export default function App() {
           <a href="#skills" className="hover:text-accent-spring transition-colors">Stack</a>
           <a href="#projects" className="hover:text-accent-spring transition-colors">Architecture</a>
           <a href="#glitch-storm" className="hover:text-accent-spring transition-colors">Labs</a>
+          <a href="#hobbies" className="hover:text-accent-spring transition-colors">Side Quests</a>
           <a href="#contact" className="hover:text-accent-spring transition-colors">Connect</a>
         </div>
         <div className="hidden md:flex lg:hidden gap-4 font-bold text-[11px] uppercase tracking-tight text-accent-java">
           <a href="#about" className="hover:text-accent-spring transition-colors">Dash</a>
           <a href="#skills" className="hover:text-accent-spring transition-colors">Stack</a>
           <a href="#projects" className="hover:text-accent-spring transition-colors">Arch</a>
+          <a href="#hobbies" className="hover:text-accent-spring transition-colors">Side</a>
           <a href="#contact" className="hover:text-accent-spring transition-colors">Contact</a>
         </div>
-        <a href="#contact" className="bg-accent-java text-white px-4 md:px-6 py-1.5 md:py-2 rounded-full font-bold text-xs md:text-sm neo-shadow-hover transition-all">
-          JOIN NOW
-        </a>
+        <div className="flex items-center gap-2 md:gap-4">
+          <button 
+            onClick={() => setIsDarkMode(!isDarkMode)}
+            className="w-10 h-10 md:w-11 md:h-11 rounded-full border-2 border-accent-java flex items-center justify-center neo-shadow-hover transition-all bg-surface text-accent-java"
+            aria-label="Toggle Theme"
+          >
+            {isDarkMode ? <Sun className="w-5 h-5 md:w-6 md:h-6" /> : <Moon className="w-5 h-5 md:w-6 md:h-6" />}
+          </button>
+          <a href="#contact" className="bg-accent-java text-bg px-4 md:px-6 py-1.5 md:py-2 rounded-full font-bold text-xs md:text-sm neo-shadow-hover transition-all">
+            JOIN NOW
+          </a>
+        </div>
       </motion.nav>
 
       <main className="relative z-10 mx-auto max-w-7xl px-6 md:px-8 lg:px-12 space-y-32 md:space-y-48 py-32">
@@ -284,7 +338,7 @@ export default function App() {
               <a href="#projects" className="neo-button scale-100 lg:scale-110">
                 GET STARTED <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
               </a>
-              <a href="#about" className="bg-accent-java text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-bold text-sm md:text-base neo-shadow-hover transition-all">
+              <a href="#about" className="bg-accent-java text-bg px-6 md:px-8 py-3 md:py-4 rounded-full font-bold text-sm md:text-base neo-shadow-hover transition-all">
                 BROWSE STACK
               </a>
             </motion.div>
@@ -459,13 +513,30 @@ export default function App() {
                 </div>
                 <div className="font-black text-base lg:text-lg mb-1 uppercase tracking-tight whitespace-nowrap">{s.name}</div>
                 <div className="font-bold text-[9px] lg:text-[10px] text-muted uppercase mb-4 lg:mb-6 opacity-60 tracking-widest">{s.cat}</div>
-                <div className="w-full h-2 lg:h-3 bg-bg border-2 border-accent-java rounded-full overflow-hidden p-[1px] lg:p-[2px]">
+                <div className="w-full h-2 lg:h-3 bg-bg border-2 border-accent-java rounded-full overflow-hidden p-[1px] lg:p-[2px] relative">
                   <motion.div 
                     initial={{ width: 0 }}
                     whileInView={{ width: `${s.level}%` }}
-                    transition={{ duration: 1.5, delay: 0.3 + (i * 0.05) }}
-                    className="h-full bg-accent-spring rounded-full"
-                  />
+                    transition={{ 
+                      duration: 2.5, 
+                      delay: 0.5 + (i * 0.1),
+                      ease: [0.22, 1, 0.36, 1]
+                    }}
+                    className="h-full bg-accent-spring rounded-full relative overflow-hidden"
+                  >
+                    <motion.div 
+                      animate={{ 
+                        x: ['-100%', '200%'] 
+                      }}
+                      transition={{ 
+                        duration: 2, 
+                        repeat: Infinity, 
+                        ease: "linear",
+                        delay: 2.5 // Start shimmer after fill-up
+                      }}
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent w-1/2"
+                    />
+                  </motion.div>
                 </div>
               </motion.div>
             ))}
@@ -613,13 +684,55 @@ export default function App() {
                 </div>
                 <div className="space-y-3 md:space-y-6">
                   <h3 className="text-3xl md:text-4xl lg:text-3xl font-black tracking-tight leading-none uppercase group-hover:text-accent-spring transition-colors">{e.role}</h3>
-                  <div className="inline-block bg-accent-java text-white px-4 py-1.5 rounded-full text-[10px] md:text-xs font-black">@ {e.company}</div>
+                  <div className="inline-block bg-accent-java text-bg px-4 py-1.5 rounded-full text-[10px] md:text-xs font-black">@ {e.company}</div>
                   <p className="text-muted font-medium text-base md:text-lg lg:text-base leading-relaxed pt-2 max-w-2xl">
                     {e.desc}
                   </p>
                 </div>
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* --- Hobbies Section --- */}
+        <section id="hobbies" className="scroll-mt-32">
+          <SectionLabel text="BEYOND THE TERMINAL" />
+          <h2 className="text-3xl md:text-5xl font-black tracking-tighter mb-12 md:mb-16 italic uppercase leading-none">SIDE QUESTS</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {HOBBIES.map((h, i) => (
+              <div key={i} className="h-full">
+                <FadeIn delay={i * 0.1} className="h-full">
+                  <motion.div 
+                    whileHover={{ scale: 1.02, rotate: i % 2 === 0 ? 1 : -1 }}
+                    className="neo-card h-full p-8 flex flex-col items-center text-center group cursor-default"
+                  >
+                    <div className={`w-16 h-16 md:w-20 md:h-20 ${h.color} border-2 border-accent-java rounded-2xl flex items-center justify-center neo-shadow mb-8 group-hover:shadow-none group-hover:translate-x-1 group-hover:translate-y-1 transition-all`}>
+                      {h.icon}
+                    </div>
+                    <h3 className="text-xl font-black mb-3 uppercase tracking-tight">{h.name}</h3>
+                    <p className="text-sm font-medium text-muted leading-relaxed opacity-80 italic">
+                      "{h.desc}"
+                    </p>
+                  </motion.div>
+                </FadeIn>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-12 md:mt-16 bg-accent-java text-bg p-8 md:p-12 rounded-3xl neo-shadow flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="flex items-center gap-6">
+              <div className="w-16 h-16 bg-accent-spring rounded-full border-2 border-white flex items-center justify-center shrink-0">
+                <Heart className="w-8 h-8 text-accent-java fill-current" />
+              </div>
+              <div className="text-center md:text-left">
+                <h4 className="text-xl md:text-2xl font-black uppercase tracking-tight">Open Source Mindset</h4>
+                <p className="text-sm md:text-base font-bold text-gray-400 mt-1">GIVING BACK TO THE COMMUNITY IS PART OF MY CORE LOGIC.</p>
+              </div>
+            </div>
+            <a href="https://github.com/deepu0309" target="_blank" rel="noopener noreferrer" className="bg-accent-spring text-accent-java px-8 py-4 rounded-xl font-black text-sm uppercase neo-shadow-hover transition-all whitespace-nowrap">
+              VIEW GITHUB OPS
+            </a>
           </div>
         </section>
 
@@ -634,7 +747,7 @@ export default function App() {
               <SectionLabel text="STAY CONNECTED" />
               <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black tracking-tighter mb-8 md:mb-10 leading-[0.85] uppercase">
                 LET'S COMPILE <br/> 
-                <span className="text-bg drop-shadow-[2px_2px_0px_#1a1a1a]">SOMETHING GREAT</span>
+                <span className="text-bg drop-shadow-[2px_2px_0px_var(--color-shadow)]">SOMETHING GREAT</span>
               </h2>
               <p className="font-bold text-base md:text-xl leading-relaxed mb-12 md:mb-16 max-w-2xl">
                 Currently open to new opportunities to build robust backend systems. 
@@ -653,7 +766,7 @@ export default function App() {
                     target="_blank"
                     rel="noopener noreferrer"
                     key={i}
-                    className="flex items-center gap-4 lg:gap-6 p-4 lg:p-6 bg-white border-2 border-accent-java rounded-xl lg:rounded-2xl neo-shadow-hover transition-all overflow-hidden"
+                    className="flex items-center gap-4 lg:gap-6 p-4 lg:p-6 bg-surface border-2 border-accent-java rounded-xl lg:rounded-2xl neo-shadow-hover transition-all overflow-hidden"
                   >
                     <div className="w-10 h-10 lg:w-12 lg:h-12 bg-accent-spring border-2 border-accent-java rounded-lg lg:rounded-xl flex items-center justify-center shrink-0">
                       {React.cloneElement(c.icon as React.ReactElement, { className: "w-5 h-5 lg:w-6 lg:h-6" })}
@@ -676,7 +789,7 @@ export default function App() {
                 <div className="flex flex-wrap items-center gap-4">
                   <span>TERMS</span>
                   <span>PRIVACY</span>
-                  <span className="text-white drop-shadow-[1px_1px_0px_#1a1a1a]">V2.0.42</span>
+                  <span className="text-white drop-shadow-[1px_1px_0px_var(--color-shadow)]">V2.0.42</span>
                 </div>
               </footer>
             </div>
