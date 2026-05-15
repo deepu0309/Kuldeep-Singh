@@ -271,7 +271,7 @@ export default function App() {
           <div className="w-8 h-8 lg:w-10 lg:h-10 bg-accent-spring rounded-lg border-2 border-accent-java flex items-center justify-center neo-shadow group-hover:translate-x-[1px] group-hover:translate-y-[1px] group-hover:shadow-none transition-all">
             <Cpu className="w-5 h-5 lg:w-6 lg:h-6" />
           </div>
-          <span className="font-bold text-base lg:text-lg tracking-tighter">KULDEEP.SPRING</span>
+          <span className="font-bold text-base lg:text-lg tracking-tighter">KULDEEP SINGH</span>
         </a>
         <div className="hidden lg:flex gap-10 font-bold text-[13px] uppercase tracking-tight text-accent-java">
           <a href="#about" className="hover:text-accent-spring transition-colors">Dashboard</a>
